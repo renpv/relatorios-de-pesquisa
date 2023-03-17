@@ -17,6 +17,7 @@
         </include>
         <exclude>
             <directory suffix=".php">./app/Views</directory>
+            <directory suffix=".php">./app/Config</directory>
             <file>./app/Config/Routes.php</file>
         </exclude>
         <report>

@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Libraries;
+use App\Interfaces\ApiLoginInterface;
 
 /**
  * Biblioteca para auxiliar no processo de validação de login na API Unilab
@@ -12,7 +13,7 @@ namespace App\Libraries;
  * 
  */
 
-class ApiLoginSig
+class ApiLoginSig implements ApiLoginInterface
 {
     private array $options = [
         'baseURI' =>'https://api.unilab.edu.br/',

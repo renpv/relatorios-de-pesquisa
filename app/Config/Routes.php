@@ -32,13 +32,6 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->group('admin', static function ($routes){
-    $routes->get('login', 'Admin::index');
-    $routes->post('login', 'Admin::create');
-    $routes->get('logout', 'Admin::logout');
-    $routes->get('painel', 'Admin::painel');
-});
-
 $routes->get('login', 'LoginController::loginView');
 $routes->post('login', 'LoginController::loginAction');
 

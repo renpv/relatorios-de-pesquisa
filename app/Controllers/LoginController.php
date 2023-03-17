@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Libraries\ApiLoginSig;
 use CodeIgniter\Shield\Controllers\LoginController as ShieldLogin;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\Shield\Models\UserIdentityModel;
 use CodeIgniter\Shield\Models\UserModel;
 use CodeIgniter\Shield\Entities\User;
+use Config\Services;
 
 class LoginController extends ShieldLogin
 {
@@ -30,7 +30,7 @@ class LoginController extends ShieldLogin
         $authenticator = auth('session')->getAuthenticator();
 
         
-        $loginSig = $this->loginSig($credentials);
+        $loginSig = $this->loginApi($credentials);
         if($loginSig['error']){
             return redirect()->route('login')->withInput()->with('danger', $loginSig['data']);
         }
@@ -58,9 +58,10 @@ class LoginController extends ShieldLogin
         ];
     }
 
-    private function loginSig($credentials):array
+    private function loginApi($credentials):array
     {
-        $apiLoginSig = (new ApiLoginSig)->validate($credentials['username'], $credentials['password']);
+        $apiLogin = Services::apiLogin();
+        $apiLoginSig = $apiLogin->validate($credentials['username'], $credentials['password']);
         return $apiLoginSig;
     }
 

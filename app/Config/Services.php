@@ -2,7 +2,9 @@
 
 namespace Config;
 
+use App\Libraries\ApiLoginSig;
 use CodeIgniter\Config\BaseService;
+use Tests\Support\Libraries\ApiLoginSigMock;
 
 /**
  * Services Configuration file.
@@ -29,4 +31,13 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+    public static function apiLogin()
+    {
+        if(ENVIRONMENT == 'testing')
+            return new ApiLoginSigMock;
+            
+        return new ApiLoginSig;
+    }
+
 }
+
