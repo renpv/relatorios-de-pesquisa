@@ -1,67 +1,69 @@
-<?php 
+<?php
 
 namespace App\Libraries;
+
 use App\Interfaces\ApiLoginInterface;
 
 /**
  * Biblioteca para auxiliar no processo de validação de login na API Unilab
- * 
- * Modo de usar: 
- * 
+ *
+ * Modo de usar:
+ *
  * 1 - Pode ser chamada com o seguinte código:
  * (new ApiLoginSig)->validate($login, $password);
- * 
+ *
  */
 
 class ApiLoginSig implements ApiLoginInterface
 {
     private array $options = [
-        'baseURI' =>'https://api.unilab.edu.br/',
-        'verify' => false,
+        'baseURI' => 'https://api.unilab.edu.br/',
+        'verify'  => false,
         'timeout' => 3,
     ];
+
     private $client = null;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->client = \Config\Services::curlrequest($this->options);
     }
 
     /**
      * Método para validação do usuário
-     * 
+     *
      * @param string $username Nome de usuário que será validado
      * @param string $password Senha do usuário que será validado
-     * 
+     *
      * @return array ['error' => boolean, 'data' => string|array]
      */
-    public function validate(string $username, string $password):array 
+    public function validate(string $username, string $password): array
     {
         $token = $this->getToken($username, $password);
-        if(!$token){
+        if (!$token) {
             return [
                 'error' => true,
-                'data' => 'Usuário ou senha inválidos'
-            ];            
+                'data'  => 'Usuário ou senha inválidos',
+            ];
         }
         $bond = $this->getBond($token);
-        if(!$bond){
+        if (!$bond) {
             return [
                 'error' => true,
-                'data' => 'Não foi possível recuperar informações do usuário'
-            ];            
+                'data'  => 'Não foi possível recuperar informações do usuário',
+            ];
         }
 
         return [
             'error' => false,
-            'data' => $bond
+            'data'  => $bond,
         ];
-
     }
 
     private function getToken(string $username, string $password)
     {
         $options = [
-            'json' => ['login' => $username,'senha' => $password]
+            'json' => ['login' => $username, 'senha' => $password],
         ];
         try {
             $response = $this->client->post('api/authenticate', $options);
@@ -78,7 +80,7 @@ class ApiLoginSig implements ApiLoginInterface
     private function getBond(string $token)
     {
         $response = $this->client->get('api/bond', [
-            'headers' => ['Authorization' => 'Bearer ' . $token]
+            'headers' => ['Authorization' => 'Bearer ' . $token],
         ]);
 
         if ($response->getStatusCode() == 200) {
@@ -88,4 +90,3 @@ class ApiLoginSig implements ApiLoginInterface
         return false;
     }
 }
-

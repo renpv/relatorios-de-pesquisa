@@ -2,22 +2,28 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\Shield\Controllers\LoginController as ShieldLogin;
+use App\Interfaces\ApiLoginInterface;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
+use CodeIgniter\Shield\Controllers\LoginController as ShieldLogin;
+use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserIdentityModel;
 use CodeIgniter\Shield\Models\UserModel;
-use CodeIgniter\Shield\Entities\User;
 use Config\Services;
 
 class LoginController extends ShieldLogin
 {
+    private ?ApiLoginInterface $apiLogin = null;
 
+    public function __construct()
+    {
+        $this->apiLogin    = Services::apiLogin();
+    }
     public function loginAction(): RedirectResponse
     {
         $rules = $this->getValidationRules();
 
-        if (! $this->validate($rules)) {
+        if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -29,9 +35,8 @@ class LoginController extends ShieldLogin
         /** @var Session $authenticator */
         $authenticator = auth('session')->getAuthenticator();
 
-        
         $loginSig = $this->loginApi($credentials);
-        if($loginSig['error']){
+        if ($loginSig['error']) {
             return redirect()->route('login')->withInput()->with('danger', $loginSig['data']);
         }
 
@@ -58,32 +63,31 @@ class LoginController extends ShieldLogin
         ];
     }
 
-    private function loginApi($credentials):array
+    private function loginApi($credentials): array
     {
-        $apiLogin = Services::apiLogin();
-        $apiLoginSig = $apiLogin->validate($credentials['username'], $credentials['password']);
+        $apiLoginSig = $this->apiLogin->validate($credentials['username'], $credentials['password']);
         return $apiLoginSig;
     }
 
-    private function userValidate(array $user): ?RedirectResponse
+    private function userValidate(array $user): RedirectResponse
     {
-        $userModel = new UserModel;
-        $userFind = $userModel->where('username', $user[0]->login)->first();
+        $userModel = new UserModel();
+        /** @var \CodeIgniter\Shield\Entities\User|null $userFind */
+        $userFind  = $userModel->where('username', $user[0]->login)->first();
         $isTeacher = false;
         $isStudent = false;
-
-        if(!is_null($userFind)){
+        if (!is_null($userFind)) {
             $idUser = $userFind->id;
-        }else{
+        } else {
             try {
                 $userEntity = new User([
                     'username' => $user[0]->login,
-                    'email'    => $user[0]->email
+                    'email'    => $user[0]->email,
                 ]);
                 $userModel->save($userEntity);
                 $idUser = $userModel->getInsertID();
 
-                $userIdentity = new UserIdentityModel;
+                $userIdentity = new UserIdentityModel();
                 $userIdentity->update($idUser, ['extra' => json_encode($user, JSON_FORCE_OBJECT)]);
 
                 $isTeacher = $this->checkUserIsTeacher($user);
@@ -97,8 +101,12 @@ class LoginController extends ShieldLogin
 
         try {
             auth()->loginById($idUser);
-            if($isTeacher) auth()->user()->addGroup('docente');
-            if($isStudent) auth()->user()->addGroup('discente');
+            if ($isTeacher) {
+                auth()->user()->addGroup('docente');
+            }
+            if ($isStudent) {
+                auth()->user()->addGroup('discente');
+            }
             session()->push('user', ['cpf' => $this->formatCPF($user[0]->cpf_cnpj)]);
             return redirect()->to(config('Auth')->loginRedirect())->withCookies();
         } catch (\Throwable $th) {
@@ -109,18 +117,22 @@ class LoginController extends ShieldLogin
 
     private function checkUserIsTeacher(array $user): bool
     {
-        foreach($user as $profile)
-            if($profile->id_tipo_usuario == 1 && $profile->id_categoria == 1)
+        foreach ($user as $profile) {
+            if ($profile->id_tipo_usuario == 1 && $profile->id_categoria == 1) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     private function checkUserIsStudent(array $user): bool
     {
-        foreach($user as $profile)
-            if(!is_null($profile->id_status_discente))
+        foreach ($user as $profile) {
+            if (!is_null($profile->id_status_discente)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -128,7 +140,7 @@ class LoginController extends ShieldLogin
     private function formatCPF(int $cpf)
     {
         $cpf_txt = strval($cpf);
-        $cpf_pad = str_pad($cpf_txt, 11,'0',STR_PAD_LEFT);
+        $cpf_pad = str_pad($cpf_txt, 11, '0', STR_PAD_LEFT);
         return $cpf_pad;
     }
 }

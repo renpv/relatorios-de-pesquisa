@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 use App\Controllers\LoginController;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\ControllerTestTrait;
@@ -21,13 +22,12 @@ class LoginControllerTest extends CIUnitTestCase
 
     public function testDeveRetornarUmCPFFormatado()
     {
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('formatCPF');
+        $metodo    = $reflector->getMethod('formatCPF');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, 321654);
         $this->assertEquals('00000321654', $resultado);
-
     }
 
     public function testDeveRetornarTrueParaDadosDeAlunoComStatusDiscente()
@@ -37,13 +37,12 @@ class LoginControllerTest extends CIUnitTestCase
                 "id_status_discente": 1
             }
         ]');
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('checkUserIsStudent');
+        $metodo    = $reflector->getMethod('checkUserIsStudent');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, $aluno);
         $this->assertEquals(true, $resultado);
-
     }
     public function testDeveRetornarTrueParaDadosDeAlunoSemStatusDiscente()
     {
@@ -52,13 +51,12 @@ class LoginControllerTest extends CIUnitTestCase
                 "id_status_discente": null
             }
         ]');
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('checkUserIsStudent');
+        $metodo    = $reflector->getMethod('checkUserIsStudent');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, $aluno);
         $this->assertEquals(false, $resultado);
-
     }
 
     public function testDeveRetornarTrueParaDadosDeDocenteComTipoUsuarioUmECategoriaUm()
@@ -69,13 +67,12 @@ class LoginControllerTest extends CIUnitTestCase
                 "id_categoria": 1
             }
         ]');
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('checkUserIsTeacher');
+        $metodo    = $reflector->getMethod('checkUserIsTeacher');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, $teacher);
         $this->assertEquals(true, $resultado);
-
     }
     public function testDeveRetornarFalseParaDadosDeDocenteComCategoriaDois()
     {
@@ -85,13 +82,12 @@ class LoginControllerTest extends CIUnitTestCase
                 "id_categoria": 2
             }
         ]');
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('checkUserIsTeacher');
+        $metodo    = $reflector->getMethod('checkUserIsTeacher');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, $teacher);
         $this->assertEquals(false, $resultado);
-
     }
 
     public function testDeveRetornarFalseParaDadosDeDocenteComTTipoUsuarioDois()
@@ -102,12 +98,11 @@ class LoginControllerTest extends CIUnitTestCase
                 "id_categoria": 1
             }
         ]');
-        $obj = new LoginController();
+        $obj       = new LoginController();
         $reflector = new ReflectionClass($obj);
-        $metodo = $reflector->getMethod('checkUserIsTeacher');
+        $metodo    = $reflector->getMethod('checkUserIsTeacher');
         $metodo->setAccessible(true);
         $resultado = $metodo->invoke($obj, $teacher);
         $this->assertEquals(false, $resultado);
-
     }
 }

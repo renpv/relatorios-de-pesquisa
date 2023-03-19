@@ -1,4 +1,5 @@
 <?php
+
 use App\Libraries\ApiLogDiscord;
 use CodeIgniter\Test\TestLogger;
 use Config\Logger;
@@ -18,7 +19,7 @@ use Config\Services;
  * @see: https://codeigniter4.github.io/CodeIgniter4/
  */
 
- if (! function_exists('log_message')) {
+if (!function_exists('log_message')) {
     /**
      * A convenience/compatibility method for logging events through
      * the Log system.
@@ -37,15 +38,16 @@ use Config\Services;
      */
     function log_message(string $level, string $message, array $context = [])
     {
+        ApiLogDiscord::send($level, $message);
         // When running tests, we want to always ensure that the
         // TestLogger is running, which provides utilities for
         // for asserting that logs were called in the test code.
+
         if (ENVIRONMENT === 'testing') {
             $logger = new TestLogger(new Logger());
 
             return $logger->log($level, $message, $context);
         }
-        ApiLogDiscord::send($level, $message);
         return Services::logger(true)->log($level, $message, $context); // @codeCoverageIgnore
     }
 }
