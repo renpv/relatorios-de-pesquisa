@@ -19,6 +19,13 @@ class LoginController extends ShieldLogin
     {
         $this->apiLogin    = Services::apiLogin();
     }
+
+    /**
+     * Método que recebe a requisição de login no sistema
+     *
+     * @method RedirectResponse loginAction()
+     *
+     */
     public function loginAction(): RedirectResponse
     {
         $rules = $this->getValidationRules();

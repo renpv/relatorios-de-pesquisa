@@ -11,6 +11,8 @@ namespace App\Libraries;
  * 2 - Definir a variável DISCORD_WEBHOOK_ID no arquivo .env
  * 3 - Chamar a função send da sequinte forma: ApiLogDiscord::send('ERRO', 'Mensagem de erro');
  *
+ * @method void send(string $errorLevel, string $message)
+ *
  */
 
 class ApiLogDiscord
