@@ -1,4 +1,5 @@
 <?php
+
 use App\Libraries\ApiLogDiscord;
 use CodeIgniter\Test\TestLogger;
 use Config\Logger;
@@ -18,7 +19,7 @@ use Config\Services;
  * @see: https://codeigniter4.github.io/CodeIgniter4/
  */
 
- if (! function_exists('log_message')) {
+if (!function_exists('log_message')) {
     /**
      * A convenience/compatibility method for logging events through
      * the Log system.

@@ -1,42 +1,42 @@
-<?php 
+<?php
 
 namespace Tests\Support\Libraries;
+
 use App\Interfaces\ApiLoginInterface;
 
 /**
  * Biblioteca para auxiliar no processo de validação de login na API Unilab
- * 
- * Modo de usar: 
- * 
+ *
+ * Modo de usar:
+ *
  * 1 - Pode ser chamada com o seguinte código:
  * (new ApiLoginSig)->validate($login, $password);
- * 
+ *
  */
 
 class ApiLoginSigMock implements ApiLoginInterface
 {
-    
-
     /**
      * Método para validação do usuário
-     * 
+     *
      * @param string $username Valores válidos são [docente|discente]
      * @param string $password Valor válido [valido]
-     * As demais combinações retornarão usuário ou senha inválidos
-     * 
+     *                         As demais combinações retornarão usuário ou senha inválidos
+     *
      * @return array ['error' => boolean, 'data' => string|array]
      */
-    public function validate(string $username, string $password):array 
+    public function validate(string $username, string $password): array
     {
-        if(!in_array($username, ['docente', 'discente']) || $password != 'valido')
+        if (!in_array($username, ['docente', 'discente']) || $password != 'valido') {
             return [
                 'error' => true,
-                'data' => 'Usuário ou senha inválidos'
+                'data'  => 'Usuário ou senha inválidos',
             ];
+        }
 
         return [
             'error' => false,
-            'data' => $this->$username()
+            'data'  => $this->{$username}(),
         ];
     }
 
@@ -108,4 +108,3 @@ class ApiLoginSigMock implements ApiLoginInterface
         ]');
     }
 }
-

@@ -25,13 +25,13 @@ class AdminFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if($request->getPath() == 'admin/login'){
+        if ($request->getPath() == 'admin/login') {
             return;
         }
-        
+
         $auth = service('auth');
 
-        if (! $auth->isLoggedIn()) {
+        if (!$auth->isLoggedIn()) {
             return redirect()->to(site_url('admin/login'));
         }
     }
@@ -50,6 +50,5 @@ class AdminFilter implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
     }
 }
