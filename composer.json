@@ -33,10 +33,8 @@
     },
     "scripts": {
         "test": "php -d xdebug.mode=coverage vendor/bin/phpunit",
-        "check-style": "php-cs-fixer fix --verbose --dry-run --using-cache=no",
-        "validate-style": "php-cs-fixer fix --dry-run --using-cache=no --verbose --stop-on-violation",
-        "fix-style": "php-cs-fixer fix --using-cache=no",
-        "phpstan": "vendor/bin/phpstan"
+        "check-style": "php-cs-fixer fix --verbose --dry-run",
+        "fix-style": "php-cs-fixer fix"
     },
     "support": {
         "forum": "https://forum.codeigniter.com/",
