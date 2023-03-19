@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Interfaces\ApiLoginInterface;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\Shield\Controllers\LoginController as ShieldLogin;
@@ -12,6 +13,12 @@ use Config\Services;
 
 class LoginController extends ShieldLogin
 {
+    private ?ApiLoginInterface $apiLogin = null;
+
+    public function __construct()
+    {
+        $this->apiLogin    = Services::apiLogin();
+    }
     public function loginAction(): RedirectResponse
     {
         $rules = $this->getValidationRules();
@@ -58,18 +65,17 @@ class LoginController extends ShieldLogin
 
     private function loginApi($credentials): array
     {
-        $apiLogin    = Services::apiLogin();
-        $apiLoginSig = $apiLogin->validate($credentials['username'], $credentials['password']);
+        $apiLoginSig = $this->apiLogin->validate($credentials['username'], $credentials['password']);
         return $apiLoginSig;
     }
 
-    private function userValidate(array $user): ?RedirectResponse
+    private function userValidate(array $user): RedirectResponse
     {
         $userModel = new UserModel();
+        /** @var \CodeIgniter\Shield\Entities\User|null $userFind */
         $userFind  = $userModel->where('username', $user[0]->login)->first();
         $isTeacher = false;
         $isStudent = false;
-
         if (!is_null($userFind)) {
             $idUser = $userFind->id;
         } else {

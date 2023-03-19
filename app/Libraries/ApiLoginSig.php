@@ -22,11 +22,6 @@ class ApiLoginSig implements ApiLoginInterface
         'timeout' => 3,
     ];
 
-    private $teste = [
-        'bar' => [
-            'baz' => true,
-        ],
-    ];
     private $client = null;
 
     public function __construct()

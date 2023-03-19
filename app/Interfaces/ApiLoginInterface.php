@@ -10,6 +10,8 @@ namespace App\Interfaces;
  * 1 - A classe que implementar essa API deve ser chamada com o seguinte código:
  * (new ApiLogin)->validate($login, $password);
  *
+ * @method ApiLoginInterface validate()
+ *
  */
 
 interface ApiLoginInterface

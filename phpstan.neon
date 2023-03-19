@@ -1,0 +1,19 @@
+parameters:
+    level: 5
+    paths:
+        - app
+        - tests
+
+    scanDirectories:
+        - vendor\codeigniter4
+
+    excludePaths:
+        analyse:
+            - app/Config
+            - app/Common.php
+
+        analyseAndScan:
+            - app/Views
+            - app/Database/Migrations/*
+    
+
