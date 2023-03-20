@@ -43,7 +43,7 @@ jobs:
       run: composer test
     
     - name: Run PHPCSFixer
-      run: .\vendor\bin\php-cs-fixer fix --dry-run --using-cache=no --verbose --stop-on-violation
+      run: ./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --stop-on-violation
     
     - name: Run PHPStan
       run: composer phpstan
