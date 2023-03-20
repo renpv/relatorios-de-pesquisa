@@ -45,9 +45,4 @@ class ApiLogDiscord
             echo $th->getMessage();
         }
     }
-
-    public static function sendInfo(string $message): void
-    {
-        self::send('INFO', $message);
-    }
 }
