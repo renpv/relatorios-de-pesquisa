@@ -6,7 +6,6 @@ namespace App\Libraries;
  * Biblioteca para envio de mensagens (Logs de erro no sistema) para algum canal no discord
  *
  * Modo de usar:
- *
  * 1 - Gerar o webhook id no canal do discord
  * 2 - Definir a variável DISCORD_WEBHOOK_ID no arquivo .env
  * 3 - Chamar a função send da sequinte forma: ApiLogDiscord::send('ERRO', 'Mensagem de erro');
