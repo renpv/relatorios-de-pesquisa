@@ -4,6 +4,7 @@ define('BASE_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 $finder = PhpCsFixer\Finder::create()
     ->in([BASE_PATH . 'app', BASE_PATH . 'tests'])
+    ->notPath(['Libraries/ApiLogDiscord.php'])
     ->exclude(['Views', 'Config']);
 
 $config = new PhpCsFixer\Config();
