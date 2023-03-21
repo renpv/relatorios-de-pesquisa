@@ -21,9 +21,9 @@ return $config->setRules([
             '='  => 'align',
         ],
     ],
-    // 'braces' => [
-    //     'allow_single_line_closure' => true,
-    // ],
+    'braces' => [
+        'allow_single_line_closure' => true,
+    ],
     'no_extra_blank_lines'      => [
         'tokens' => [
             'curly_brace_block',
