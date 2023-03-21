@@ -4,8 +4,7 @@ define('BASE_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 $finder = PhpCsFixer\Finder::create()
     ->in([BASE_PATH . 'app', BASE_PATH . 'tests'])
-    //->notPath(['Libraries/ApiLogDiscord.php'])
-    ->exclude(['Views', 'Config', 'Libraries']);
+    ->exclude(['Views', 'Config']);
 
 $config = new PhpCsFixer\Config();
 return $config->setRules([
@@ -22,9 +21,9 @@ return $config->setRules([
             '='  => 'align',
         ],
     ],
-    'braces' => [
-        'allow_single_line_closure' => true,
-    ],
+    // 'braces' => [
+    //     'allow_single_line_closure' => true,
+    // ],
     'no_extra_blank_lines'      => [
         'tokens' => [
             'curly_brace_block',
@@ -74,5 +73,5 @@ return $config->setRules([
     'full_opening_tag'                              => true,
     'method_chaining_indentation'                   => true,
 ])
-    ->setLineEnding("\r\n")
+    ->setLineEnding("\n")
     ->setFinder($finder);
