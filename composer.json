@@ -36,7 +36,12 @@
         "fix-style": "php-cs-fixer fix --using-cache=no",
         "check-style": "php-cs-fixer fix --verbose --dry-run --using-cache=no",
         "validate-style": "./vendor/bin/php-cs-fixer fix --diff --dry-run --using-cache=no --verbose --stop-on-violation",
-        "phpstan": "vendor/bin/phpstan"
+        "phpstan": "vendor/bin/phpstan",
+        "post-install-cmd": [
+            "cp -r 'githooks/' '.git/hooks/'",
+            "php -r \"copy('githooks/pre-push', '.git/hooks/pre-push');\"",
+            "php -r \"chmod('.git/hooks/pre-push', 0777);\""
+        ]
     },
     "support": {
         "forum": "https://forum.codeigniter.com/",
