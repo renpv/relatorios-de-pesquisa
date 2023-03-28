@@ -5,7 +5,6 @@
 <div class="row">
     <div class="col-md-6 offset-md-3">
         <h1 class="my-5">Login</h1>
-        <?= $this->include('alerts') ?>
         
         <form method="post" action="<?= base_url('login'); ?>" >
         <?= csrf_field() ?>
@@ -17,7 +16,6 @@
                 <label for="password" class="form-label">Senha (Mesma do Sigaa)</label>
                 <input type="password" class="form-control" id="password" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Fazer login</button>
             <input class="btn btn-primary" type="submit" value="Fazer Login">
         </form>
     </div>

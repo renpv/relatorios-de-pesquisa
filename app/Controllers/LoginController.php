@@ -115,6 +115,7 @@ class LoginController extends ShieldLogin
                 auth()->user()->addGroup('discente');
             }
             session()->push('user', ['cpf' => $this->formatCPF($user[0]->cpf_cnpj)]);
+            session()->push('user', ['fullname' => $user[0]->nome]);
             return redirect()->to(config('Auth')->loginRedirect())->withCookies();
         } catch (\Throwable $th) {
             log_message('error', sprintf('Houve um problema ao tentar o logar com o usuário %s ', $user[0]->login));
@@ -149,5 +150,40 @@ class LoginController extends ShieldLogin
         $cpf_txt = strval($cpf);
         $cpf_pad = str_pad($cpf_txt, 11, '0', STR_PAD_LEFT);
         return $cpf_pad;
+    }
+
+    public function atualizarPerfil()
+    {
+        $rules = $this->getValidationRules();
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $credentials             = $this->request->getPost(setting('Auth.validFields'));
+        $credentials             = array_filter($credentials);
+        $credentials['password'] = $this->request->getPost('password');
+
+        /** @var Session $authenticator */
+        $authenticator = auth('session')->getAuthenticator();
+
+        $loginSig = $this->loginApi($credentials);
+        if ($loginSig['error']) {
+            return redirect()->route('login')->withInput()->with('danger', $loginSig['data']);
+        }
+
+        $userModel = new UserModel();
+        /** @var User */
+        $userFind  = $userModel->where('username', $loginSig['data'][0]->login)->first();
+
+        $userIdentity = new UserIdentityModel();
+        /** @var bool */
+        $userExtra    = $userIdentity->update($userFind->id, ['extra' => json_encode($loginSig['data'], JSON_FORCE_OBJECT)]);
+
+        if (!$userExtra) {
+            return redirect()->back()->with('danger', 'Erro ao tentar gravar as informações do usuário. Favor contactar a CPq');
+        }
+
+        return redirect('usuario/perfil');
     }
 }
