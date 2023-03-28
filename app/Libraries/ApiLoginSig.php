@@ -19,7 +19,7 @@ class ApiLoginSig implements ApiLoginInterface
     private array $options = [
         'baseURI' => 'https://api.unilab.edu.br/',
         'verify'  => false,
-        'timeout' => 3,
+        'timeout' => 8,
     ];
 
     private $client = null;

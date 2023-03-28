@@ -10,6 +10,7 @@ parameters:
     excludePaths:
         analyse:
             - app/Config
+            - app/Cells
             - app/Common.php
 
         analyseAndScan:

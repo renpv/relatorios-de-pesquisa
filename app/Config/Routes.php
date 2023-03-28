@@ -1,7 +1,6 @@
 <?php
 
 namespace Config;
-use App\Controllers\LoginController;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -35,8 +34,12 @@ $routes->get('/', 'Home::index');
 $routes->get('login', 'LoginController::loginView');
 $routes->post('login', 'LoginController::loginAction');
 
-service('auth')->routes($routes);
+$routes->group('usuario', ['filter' => 'session'], function ($routes) {
+    $routes->get('perfil', 'Usuario::perfil');
+    $routes->post('atualizar_perfil', 'LoginController::atualizarPerfil');
+});
 
+service('auth')->routes($routes);
 
 /*
  * --------------------------------------------------------------------

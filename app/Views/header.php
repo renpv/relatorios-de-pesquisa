@@ -5,9 +5,7 @@
 
     <ul class="nav nav-pills">        
         <?php if(auth()->user()): ?>
-            <?php if(auth()->user()->inGroup('docente', 'discente', 'gestao')): ?>
-                <li class="nav-item"><a href="/logout" class="nav-link" aria-current="page">Enviar relatório</a></li>
-            <?php endif; ?>
+            <span class="mt-2 mx-2"><?= session()->get('user')['fullname'] ?? auth()->user()->username ?></span>
 
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
