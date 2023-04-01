@@ -110,8 +110,6 @@ class ApiLogDiscord
         // Add special placeholders
         $replace['{post_vars}'] = '$_POST: ' . print_r($_POST, true);
         $replace['{get_vars}']  = '$_GET: ' . print_r($_GET, true);
-        /** @phpstan-ignore-next-line */
-        $replace['{env}']       = ENVIRONMENT;
 
         // Allow us to log the file/line that we are logging from
         if (strpos($message, '{file}') !== false) {
