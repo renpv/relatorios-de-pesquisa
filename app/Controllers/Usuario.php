@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
 use CodeIgniter\Shield\Entities\UserIdentity;
 use CodeIgniter\Shield\Models\UserIdentityModel;
 
@@ -46,5 +47,11 @@ class Usuario extends BaseController
             $extraReturn = $e;
         }
         return $extraReturn;
+    }
+
+    public function list()
+    {
+        $users = (new UserModel())->findAll();
+        return view('usuario/list', compact('users'));
     }
 }

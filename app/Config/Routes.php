@@ -38,6 +38,7 @@ $routes->post('login', 'LoginController::loginAction');
 $routes->group('usuario', ['filter' => 'session'], function ($routes) {
     $routes->get('perfil', 'Usuario::perfil');
     $routes->post('atualizar_perfil', 'LoginController::atualizarPerfil');
+    $routes->get('listar', 'Usuario::list');
 });
 
 service('auth')->routes($routes);

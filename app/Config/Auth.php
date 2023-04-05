@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Config;
 
-use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 use CodeIgniter\Shield\Authentication\Actions\ActionInterface;
 use CodeIgniter\Shield\Authentication\AuthenticatorInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\AccessTokens;
@@ -14,6 +13,7 @@ use CodeIgniter\Shield\Authentication\Passwords\DictionaryValidator;
 use CodeIgniter\Shield\Authentication\Passwords\NothingPersonalValidator;
 use CodeIgniter\Shield\Authentication\Passwords\PwnedValidator;
 use CodeIgniter\Shield\Authentication\Passwords\ValidatorInterface;
+use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 use CodeIgniter\Shield\Models\UserModel;
 
 class Auth extends ShieldAuth
@@ -387,7 +387,8 @@ class Auth extends ShieldAuth
      *
      * @var class-string<UserModel>
      */
-    public string $userProvider = UserModel::class;
+    // public string $userProvider = UserModel::class;
+    public string $userProvider = \App\Models\UserModel::class;
 
     /**
      * Returns the URL that a user should be redirected
@@ -395,7 +396,6 @@ class Auth extends ShieldAuth
      */
     public function loginRedirect(): string
     {
-
         $url = setting('Auth.redirects')['login'];
 
         return $this->getUrl($url);
