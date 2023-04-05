@@ -19,7 +19,7 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-// $routes->setAutoRoute(false);
+$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -38,7 +38,13 @@ $routes->post('login', 'LoginController::loginAction');
 $routes->group('usuario', ['filter' => 'session'], function ($routes) {
     $routes->get('perfil', 'Usuario::perfil');
     $routes->post('atualizar_perfil', 'LoginController::atualizarPerfil');
-    $routes->get('listar', 'Usuario::list');
+    $routes->group('/', ['filter' => 'superadmin'], function ($routes) {
+        $routes->get('/', 'Usuario::list');
+        $routes->get('listar', 'Usuario::list');
+        $routes->get('(:segment)', 'Usuario::view/$1');
+        $routes->put('atualizar_grupos', 'Usuario::atualizar_grupos');
+        $routes->post('atualizar_grupos', 'Usuario::atualizar_grupos');
+    });
 });
 
 service('auth')->routes($routes);

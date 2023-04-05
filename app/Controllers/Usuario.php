@@ -54,4 +54,32 @@ class Usuario extends BaseController
         $users = (new UserModel())->findAll();
         return view('usuario/list', compact('users'));
     }
+
+    public function view($id)
+    {
+        $user = (new UserModel())->find($id);
+        if (is_null($user)) {
+            return redirect()->back()->with('danger', 'Usuário não encontrado na base de dados');
+        }
+        return view('usuario/view', compact('user'));
+    }
+    public function atualizar_grupos()
+    {
+        $grupos     = $this->request->getPost();
+        /** @var \CodeIgniter\Shield\Entities\User|null */
+        $user       = (new UserModel())->find($grupos['id']);
+        if (is_null($user)) {
+            return redirect()->back()->with('danger', 'Usuário não encontrado na base de dados');
+        }
+
+        $AuthGroups = ['superadmin', 'admin', 'clic'];
+        foreach ($AuthGroups as $group) {
+            if (in_array($group, $grupos)) {
+                $user->addGroup($group);
+            } else {
+                $user->removeGroup($group);
+            }
+        }
+        return redirect()->back()->with('success', 'Perfil de usuário atualizado com sucesso');
+    }
 }

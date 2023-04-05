@@ -1,7 +1,11 @@
 <?= $this->extend('default') ?>
 
 <?= $this->section('css') ?>
-<link href="<?= base_url()?>/js/DataTables/datatables.min.css" rel="stylesheet"/>
+<link href="<?= base_url()?>js/DataTables/datatables.min.css" rel="stylesheet"/>
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet"/> -->
+
+<link href="<?= base_url()?>js/DataTables/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -13,6 +17,7 @@
                 <tr>
                     <th>Nome de usuário</th>
                     <th>Usuário</th>
+                    <th>Grupos</th>
                     <th>Funções</th>
                 </tr>
             </thead>
@@ -21,9 +26,9 @@
                 <tr>
                     <td><?= $user->username ?></td>
                     <td><?= $user->nome ?></td>
+                    <td><?= implode(', ', $user->getGroups()) ?></td>
                     <td>
-                        <a href="<?= base_url('usuario/view/') . $user->id?>"><i data-feather="eye"></i></a>
-                        <a href="<?= base_url('usuario/edit/') . $user->id?>"><i data-feather="edit"></i></a>
+                        <a href="<?= base_url('usuario/') . $user->id?>"><i data-feather="eye"></i></a>
                     </td>
                 </tr> 
             <?php endforeach; ?>

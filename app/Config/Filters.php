@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\AdminFilter;
+use App\Filters\Superadmin;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -17,12 +18,13 @@ class Filters extends BaseConfig
      * make reading things nicer and simpler.
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
-        'admin'         => AdminFilter::class,
+        'csrf'               => CSRF::class,
+        'toolbar'            => DebugToolbar::class,
+        'honeypot'           => Honeypot::class,
+        'invalidchars'       => InvalidChars::class,
+        'secureheaders'      => SecureHeaders::class,
+        'admin'              => AdminFilter::class,
+        'superadmin'         => Superadmin::class,
     ];
 
     /**

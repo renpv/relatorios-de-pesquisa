@@ -40,7 +40,6 @@ class UserModel extends ShieldUserModel
     {
         $userIdentities = $user->getIdentities();
 
-        /** @var \CodeIgniter\Shield\Entities\UserIdentity */
         return $userIdentities[0]->__get('extra');
     }
 
